@@ -32,6 +32,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { fmtRateCI, round3, wilson } from "./stats.mjs";
+import { SECTION_NAME } from "../compose.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.dirname(HERE);
@@ -260,7 +261,7 @@ async function main() {
 			// A fixed bank is an enumeration, not a sample: no interval, same rule as the gate figure.
 			console.log(`  deterministic across repeats: ${det}/${total} (every bank prompt, n=${N})`);
 		}
-		console.log(`  <diluvium> section present:   ${fmtRateCI(sectioned, total)}`);
+		console.log(`  <${SECTION_NAME}> section present:   ${fmtRateCI(sectioned, total)}`);
 		if (total > 0) console.log(`  rendered bytes:               min=${Math.min(...bytes)} max=${Math.max(...bytes)}`);
 
 		// The preamble inputs do not vary across rows by design, so these are two assertions run

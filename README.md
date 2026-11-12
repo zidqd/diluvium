@@ -20,8 +20,9 @@ keeps the part that works and deletes the parts that made the transcript lie.
 | `STOCK_PREAMBLES` wholesale stripping | Byte-exact match only, and mode-gated | A copied-and-edited default prompt is the user's own text and stays. The strip runs only in a run diluvium is in force for |
 | `syncGate` on "the text exists" | Gate declared on an **observed** wire delivery | Existence is not delivery. The gate is withheld until a payload actually carried the directive |
 
-Kept verbatim from leviathan: `config.js` glob rule matching (first-match-wins, unknown mode fails
-loudly), `prompt.md` as a live-read external artifact, `gate.js` and the gate field enum, and
+Kept verbatim from leviathan: the `config.js` glob rule matching now in `glob.js`
+(first-match-wins, unknown mode fails loudly), `prompt.md` as a live-read external artifact,
+`gate.js` and the gate field enum, and
 `forge.js`'s four invariants (pure, no re-stamp, no floor, add-only) as design constraints on the
 new mechanism.
 
@@ -75,7 +76,7 @@ Rule-matched, first match wins, `provider` and `model` are globs. Off everywhere
 ## Verify
 
 ```sh
-node check.mjs                    # 19 mechanical invariants
+node check.mjs                    # 22 mechanical invariants
 node eval/run.mjs --selftest      # the statistics, exit non-zero on drift
 node eval/run.mjs --n 2           # gate contract + composition shape
 ```

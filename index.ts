@@ -19,7 +19,7 @@
  *   NEW      The gate is declared on an *observed* delivery fact read from `before_provider_request`,
  *            never on the existence of text in an options object.
  *
- * Attribution: `config.js` glob semantics, `gate.js` and `prompt.md` are ported from pi-leviathan;
+ * Attribution: `config.js`'s glob semantics (now `glob.js`), `gate.js` and `prompt.md` are ported from pi-leviathan;
  * the gate vocabulary and the R-class taxonomy come from `pi-purge`; the lineage root is `dsh-purge`.
  */
 
