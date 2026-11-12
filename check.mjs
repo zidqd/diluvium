@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Mechanical checks for dilivium.
+ * Mechanical checks for diluvium.
  *
- * Leviathan shipped `check.mjs` (2,965 lines) asserting the mechanisms it used. dilivium retired
- * most of those, so this file asserts what dilivium actually does — and, just as importantly,
+ * Leviathan shipped `check.mjs` (2,965 lines) asserting the mechanisms it used. diluvium retired
+ * most of those, so this file asserts what diluvium actually does — and, just as importantly,
  * asserts the *absence* of the mechanisms that caused the noise:
  *
  *   no `forceSystemPrompt` anywhere in the shipped code
@@ -63,14 +63,14 @@ check("compose: null text leaves no section behind", () => {
 
 check("preamble: a shipped stock wording is withheld", () => {
 	const stock = [...STOCK_PREAMBLES][0];
-	const out = withholdStockPreamble({ preamble: stock, dilivium: "D" });
+	const out = withholdStockPreamble({ preamble: stock, [SECTION_NAME]: "D" });
 	assert(out.withheld === true, `not withheld: ${out.reason}`);
 	assert(!("preamble" in out.sections), "preamble key survived");
 	return "withheld";
 });
 
 check("preamble: a user's own preamble is kept", () => {
-	const out = withholdStockPreamble({ preamble: "You are Ma-Chan, and this is YG's context.", dilivium: "D" });
+	const out = withholdStockPreamble({ preamble: "You are Ma-Chan, and this is YG's context.", [SECTION_NAME]: "D" });
 	assert(out.withheld === false, "wrongly withheld");
 	assert(out.sections === null, "a map was returned for an untouched message");
 	return out.reason;
@@ -93,12 +93,26 @@ check("compose: input maps are not mutated", () => {
 
 // ------------------------------------------------------------------ config
 
-const { globMatch } = await import(path.join(HERE, "config.js"));
+const { globMatch } = await import(path.join(HERE, "glob.js"));
 check("config: glob semantics are the ported leviathan ones", () => {
 	assert(globMatch("*deepseek*", "deepseek-ai/DeepSeek-V4.1-Flash-1017") === true, "*deepseek* should match");
 	assert(globMatch("cpa-openai", "cpa-openai") === true, "exact should match");
 	assert(globMatch("cpa-openai", "other") === false, "exact should not match another");
 	return "ok";
+});
+
+check("config: the mode vocabulary has one spelling", () => {
+	// Source text, not behaviour: `resolveMode` is private to a .ts file that check.mjs cannot import.
+	const src = read("index.ts");
+	assert(/const MODE = "diluvium";/.test(src), "MODE is not the project name");
+	assert(/rule\.mode !== MODE && rule\.mode !== "normal"/.test(src), "the loud unknown-mode branch is gone");
+	return "source-text: MODE=diluvium, an unknown rule mode still fails loudly";
+});
+
+check("config: the dead leviathan module is gone", () => {
+	assert(!fs.existsSync(path.join(HERE, "config.js")), "config.js is back — a second mode vocabulary would live in it");
+	assert(/export function globMatch\(/.test(read("glob.js")), "glob.js no longer exports globMatch");
+	return "glob.js only";
 });
 
 // ------------------------------------------------------------------ gate
@@ -152,7 +166,7 @@ check("retired: no fabricated turn file, no CoT forge", () => {
 	return "absent";
 });
 
-check("gated: the preamble strip only runs in a run dilivium is in force for", () => {
+check("gated: the preamble strip only runs in a run diluvium is in force for", () => {
 	const at = index.indexOf('pi.on("context_with_system"');
 	const body = index.slice(at, at + 800);
 	assert(/if \(!runInForce\) return undefined;/.test(body), "context_with_system is not mode-gated");
@@ -171,17 +185,17 @@ check("retired: the leading system message's text is never rewritten", () => {
 });
 
 check("delivery: an observation is bound to the bytes that were sent", () => {
-	// The regex branch accepted any dilivium section, so a request still carrying the *previous*
+	// The regex branch accepted any diluvium section, so a request still carrying the *previous*
 	// directive recorded a positive observation for the *new* prompt's hash — permanently. Delivery
 	// must be a claim about this prompt's text.
 	const at = index.indexOf("const delivered =");
 	assert(at !== -1, "no delivered expression found");
 	const expr = index.slice(at, index.indexOf(";", at));
 	assert(/text\.includes\(promptText\)/.test(expr), "delivery is not checked against the prompt's own bytes");
-	assert(!/<\\\/dilivium>/.test(expr), "delivery still accepts any dilivium section, not this prompt's text");
+	assert(!expr.includes(`<\\/${SECTION_NAME}>`), `delivery still accepts any ${SECTION_NAME} section, not this prompt's text`);
 	assert(/promptText\.length > 0/.test(expr), "an empty prompt would be treated as delivered by every payload");
 	// Dropping this term alone would pass every check above while re-introducing a ledger write for
-	// runs where dilivium is off.
+	// runs where diluvium is off.
 	assert(/runInForce &&/.test(expr), "delivery is not gated on the run being in force");
 	return "runInForce && text.includes(promptText)";
 });
@@ -208,6 +222,13 @@ check("shipped: no module is present that nothing imports", () => {
 	}
 	assert(orphans.length === 0, `no importer: ${orphans.join(", ")}`);
 	return `${shipped.length} modules, all reachable`;
+});
+
+check("shipped: no module declares a second mode vocabulary", () => {
+	const shipped = fs.readdirSync(HERE).filter((f) => /\.(js|ts|mjs)$/.test(f) && !f.startsWith("."));
+	const offenders = shipped.filter((f) => /\b(MODES|INHERITS|FORGE_MODES|CONFIG_NAME)\s*=/.test(read(f)));
+	assert(offenders.length === 0, `a second vocabulary is declared in: ${offenders.join(", ")}`);
+	return `${shipped.length} modules, one vocabulary`;
 });
 
 check("present: the directive is delivered as a section", () => {

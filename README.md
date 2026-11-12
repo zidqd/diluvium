@@ -1,23 +1,23 @@
-# dilivium
+# diluvium
 
 The directive layer for pi, rebuilt on pi's section seam.
 
 Forked from [`ImoutoHeaven/pi-leviathan`](https://github.com/ImoutoHeaven/pi-leviathan) at commit
 `e192cb2` ("cot: stop reaching through pi to the wire, and stop cutting the trace"). Lineage:
-`dsh-purge` → `pi-purge` → `pi-leviathan` → **dilivium**.
+`dsh-purge` → `pi-purge` → `pi-leviathan` → **diluvium**.
 
-Leviathan works. The problem was never suppression; it was the cost of how it got there. dilivium
+Leviathan works. The problem was never suppression; it was the cost of how it got there. diluvium
 keeps the part that works and deletes the parts that made the transcript lie.
 
 ## What changed
 
-| Leviathan | dilivium | Why |
+| Leviathan | diluvium | Why |
 |---|---|---|
-| Rewrote the leading system message's text in `context_with_system` | Writes `systemPromptOptions.sections.dilivium` | Measured: `getSystemPrompt()` 30,786 vs wire 66,516 — a 35,730-char blind spot, collapsed to 67,549 vs 67,421, a residual 128. A section makes introspection nearly match the wire, and pi diffs sections so the prefix stays cacheable |
+| Rewrote the leading system message's text in `context_with_system` | Writes `systemPromptOptions.sections.diluvium` | Measured: `getSystemPrompt()` 30,786 vs wire 66,516 — a 35,730-char blind spot, collapsed to 67,549 vs 67,421, a residual 128. A section makes introspection nearly match the wire, and pi diffs sections so the prefix stays cacheable |
 | `forceSystemPrompt` path in the stack (via presets-plus) | Never sets it; `check.mjs` asserts its absence | Forcing replaces the whole prompt for the run: no section diff, cache miss, every other extension's text dropped |
 | `turn0.yml` fabricated user/assistant turns | Not shipped | A fabricated turn corrupts compaction, `/continue` and `search_sessions`. No measurement at n≥5 justified it |
 | `forge.js` CoT fences written into stored messages | Not shipped | Persisted bytes are not ours to rewrite |
-| `STOCK_PREAMBLES` wholesale stripping | Byte-exact match only, and mode-gated | A copied-and-edited default prompt is the user's own text and stays. The strip runs only in a run dilivium is in force for |
+| `STOCK_PREAMBLES` wholesale stripping | Byte-exact match only, and mode-gated | A copied-and-edited default prompt is the user's own text and stays. The strip runs only in a run diluvium is in force for |
 | `syncGate` on "the text exists" | Gate declared on an **observed** wire delivery | Existence is not delivery. The gate is withheld until a payload actually carried the directive |
 
 Kept verbatim from leviathan: `config.js` glob rule matching (first-match-wins, unknown mode fails
@@ -28,21 +28,21 @@ new mechanism.
 ## Shape
 
 ```
-compose.js              the two things dilivium does to a prompt, as pure functions so the eval and
+compose.js              the two things diluvium does to a prompt, as pure functions so the eval and
                         the runtime measure the same code: `composeSections` writes the directive as
                         a section, `withholdStockPreamble` drops pi's stock identity sentence when
                         it byte-matches
-index.ts                config resolution, the gate tool, the delivery ledger, /dilivium
+index.ts                config resolution, the gate tool, the delivery ledger, /diluvium
 gate.js                 ported ruling engine (approve / deny / recall / invalid)
-config.js               ported glob semantics — only `globMatch` is imported; the rest of its
-                        leviathan config surface is dead code kept for the ported assertions
+glob.js                 provider and model glob matching for config rules — the only live piece of
+                        the old config.js; the rest of its leviathan surface had no importer
 prompt.md               the directive, read fresh on every run
 check.mjs               mechanical assertions, including the absence of the retired mechanisms
 eval/run.mjs            the measuring device: gate contract + composition shape
 eval/stats.mjs          Wilson score intervals
 eval/banks/             r1.json, r3.json, r4.json, gate.json, meta.json
 docs/RESEARCH-INDEX.md  45 distinct repositories across 72 data rows, T1–T4, plus the keyword matrix
-dilivium.example.json   a working config: `default: normal`, one provider rule
+diluvium.example.json   a working config: `default: normal`, one provider rule
 package.json            package identity, the `pi.extensions` entry, and the test script
 LICENSE                 Apache-2.0
 LICENSE-MIT             the retained dsh-purge notice for prompt.md
@@ -53,20 +53,20 @@ NOTICE                  per-portion attribution
 ## Install
 
 ```sh
-~/.pi/agent/scripts/dilivium-switch.sh dilivium   # swap the directive layer
-~/.pi/agent/scripts/dilivium-switch.sh leviathan  # roll back, byte for byte
+~/.pi/agent/scripts/diluvium-switch.sh diluvium   # swap the directive layer
+~/.pi/agent/scripts/diluvium-switch.sh leviathan  # roll back, byte for byte
 ```
 
 The two cannot coexist: both register `ask_authorize_gate`, and pi aborts the second with
 `Tool "ask_authorize_gate" conflicts with ...`. The switch is atomic by necessity.
 
-Config lives at `~/.pi/agent/dilivium.json`:
+Config lives at `~/.pi/agent/diluvium.json`:
 
 ```json
 {
   "default": "normal",
   "prompt": "prompt.md",
-  "rules": [{ "provider": "cpa-openai", "mode": "dilivium" }]
+  "rules": [{ "provider": "cpa-openai", "mode": "diluvium" }]
 }
 ```
 
@@ -109,7 +109,7 @@ notice covering `prompt.md` only.
 ## Provenance
 
 This repository is published **independent**: one initial commit, no pi-leviathan commits in its
-history, and no GitHub fork relationship to any upstream. `gh api repos/zidqd/dilivium --jq .fork`
+history, and no GitHub fork relationship to any upstream. `gh api repos/zidqd/diluvium --jq .fork`
 is `false` and `.parent` is `null`.
 
 Lineage therefore lives in text, not in git:
@@ -118,11 +118,11 @@ Lineage therefore lives in text, not in git:
   cutting the trace". Everything up to and including it belongs to that project; everything after
   it was built here.
 - **Inherited history** — preserved outside this repository as
-  `~/backups/dilivium-forkhistory-20261112-074157.bundle`: a `git bundle` of all refs as they stood
+  `~/backups/dilivium-forkhistory-20261112-074157.bundle` (created before the rename): a `git bundle` of all refs as they stood
   immediately before publication, 32 commits, including the eight between the fork point and the
   published tree. It is retained **privately on the author's machine** and is not attached to this
   repository, so the eight commits are not verifiable from here — the bundle path is recorded so the
   claim stays checkable by the author, not because a reader can reach it.
 
 `"private": true` in `package.json` is deliberate: it blocks `npm publish` while leaving
-`pi install ~/dilivium` working. Flipping it is a decision for a later release, not an oversight.
+`pi install ~/diluvium` working. Flipping it is a decision for a later release, not an oversight.

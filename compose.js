@@ -1,5 +1,5 @@
 /**
- * The two things dilivium does to a prompt, as pure functions.
+ * The two things diluvium does to a prompt, as pure functions.
  *
  * Split out of `index.ts` so the eval and the mechanical checks measure the code production runs,
  * rather than a re-implementation that can drift. Nothing here mutates its input.
@@ -25,7 +25,7 @@ export const STOCK_PREAMBLES = new Set([
 	"You are a coding assistant running inside pi, a coding agent harness. Help users inspect files, run commands, and modify code.",
 ]);
 
-export const SECTION_NAME = "dilivium";
+export const SECTION_NAME = "diluvium";
 
 /**
  * Put the directive in its own named section, or take it out again.

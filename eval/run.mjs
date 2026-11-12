@@ -4,13 +4,13 @@
  *
  * Ported from `pi-purge`'s eval (`eval/run.mjs` + `eval/stats.mjs`, ZiChuanLan/pi-purge), which is
  * the only harness in this lineage that states its own limits out loud. The statistics module is
- * copied verbatim; the measurements are re-cut for dilivium, whose shape is different: it composes
+ * copied verbatim; the measurements are re-cut for diluvium, whose shape is different: it composes
  * one named section rather than swapping a whole persona, so there is no append/replace/strict
  * arm matrix to compare.
  *
  * What this measures, honestly:
  *   1. Gate contract — every ruling over the fixed field enum, including the single deny path.
- *   2. Composition shape — for each bank prompt, the sections dilivium produces, rendered by the
+ *   2. Composition shape — for each bank prompt, the sections diluvium produces, rendered by the
  *      host's own renderer, and whether the result is byte-identical across `--n` repeats.
  *
  * What it does NOT measure: whether a model refuses. That needs a live model, a priced budget and
@@ -52,7 +52,7 @@ const JSON_OUT = process.argv.includes("--json");
 
 /** The installed pi dist, so the render is the host's own and not a guess. */
 function hostDist() {
-	if (process.env.DILIVIUM_HOST_DIST && fs.existsSync(process.env.DILIVIUM_HOST_DIST)) return process.env.DILIVIUM_HOST_DIST;
+	if (process.env.DILUVIUM_HOST_DIST && fs.existsSync(process.env.DILUVIUM_HOST_DIST)) return process.env.DILUVIUM_HOST_DIST;
 	const bin = String(spawnSync("sh", ["-c", "command -v pi"], { encoding: "utf8" }).stdout ?? "").trim();
 	if (!bin) return null;
 	try {
@@ -129,7 +129,7 @@ async function measureShape() {
 		// `preamble`, so seeding it here would measure a state the host cannot produce. The strip is
 		// measured separately, against `withholdStockPreamble`, which is what the runtime calls.
 		sections: { tools: "- read: Read a file" },
-		cwd: "/tmp/dilivium-eval",
+		cwd: "/tmp/diluvium-eval",
 		contextFiles: [],
 		skills: [],
 	});
@@ -260,7 +260,7 @@ async function main() {
 			// A fixed bank is an enumeration, not a sample: no interval, same rule as the gate figure.
 			console.log(`  deterministic across repeats: ${det}/${total} (every bank prompt, n=${N})`);
 		}
-		console.log(`  <dilivium> section present:   ${fmtRateCI(sectioned, total)}`);
+		console.log(`  <diluvium> section present:   ${fmtRateCI(sectioned, total)}`);
 		if (total > 0) console.log(`  rendered bytes:               min=${Math.min(...bytes)} max=${Math.max(...bytes)}`);
 
 		// The preamble inputs do not vary across rows by design, so these are two assertions run

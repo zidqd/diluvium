@@ -1,5 +1,5 @@
 /**
- * dilivium — the directive layer, rebuilt on pi's section seam.
+ * diluvium — the directive layer, rebuilt on pi's section seam.
  *
  * Forked from `pi-leviathan` (ImoutoHeaven/pi-leviathan, local HEAD e192cb2), with the delivery
  * mechanism replaced. What changed and why:
@@ -13,7 +13,7 @@
  *   RETIRED  `forge.js` CoT rewriting of stored messages. Persisted bytes are not ours to rewrite.
  *   RETIRED  `STOCK_PREAMBLES` wholesale stripping. Replaced by a single section-key decision.
  *
- *   NEW      `systemPromptOptions.sections.dilivium`. pi diffs sections against what the model
+ *   NEW      `systemPromptOptions.sections.diluvium`. pi diffs sections against what the model
  *            already has and appends one system message patching only what changed, so the
  *            directive is cache-safe, the transcript matches the wire, and nothing else is touched.
  *   NEW      The gate is declared on an *observed* delivery fact read from `before_provider_request`,
@@ -30,13 +30,13 @@ import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { authorizeGate, GATE_FIELDS, GATE_TOOL, normalizeFields } from "./gate.js";
-import { globMatch } from "./config.js";
+import { globMatch } from "./glob.js";
 import { composeSections, SECTION_NAME, withholdStockPreamble } from "./compose.js";
 
 const PACKAGE_DIR = dirname(fileURLToPath(import.meta.url));
-const DEFAULT_CONFIG_NAME = "dilivium.json";
+const DEFAULT_CONFIG_NAME = "diluvium.json";
 const DEFAULT_PROMPT = "prompt.md";
-const MODE = "dilivium";
+const MODE = "diluvium";
 
 // The stock-preamble set and the composition step live in `compose.js`, so the eval and the
 // runtime measure the same function.
@@ -51,7 +51,7 @@ type Config = {
 };
 
 function configPath(): string {
-	const env = process.env.PI_DILIVIUM_CONFIG;
+	const env = process.env.PI_DILUVIUM_CONFIG;
 	if (env && env.trim()) return isAbsolute(env) ? env : resolvePath(process.cwd(), env);
 	return join(homedir(), ".pi", "agent", DEFAULT_CONFIG_NAME);
 }
@@ -134,7 +134,7 @@ const GATE_GUIDELINE =
  * be declared in headless use. Only a positive observation is persisted, and the key carries the
  * prompt's content hash, so editing or emptying prompt.md invalidates it immediately.
  */
-const DELIVERY_STATE = join(homedir(), ".pi", "agent", "inspect", "dilivium-delivery.json");
+const DELIVERY_STATE = join(homedir(), ".pi", "agent", "inspect", "diluvium-delivery.json");
 
 function promptKey(text: string): string {
 	// Keyed on the prompt text alone: whether the section lands is a property of the text and the
@@ -167,7 +167,7 @@ function writeDeliveryState(key: string, bytes: number): void {
 
 type Delivery = { key: string | null; delivered: boolean; bytes: number; at: string } | null;
 
-export default function dilivium(pi: ExtensionAPI) {
+export default function diluvium(pi: ExtensionAPI) {
 	let delivery: Delivery = null;
 	let override: "on" | "off" | null = null;
 	let gateActive = false;
@@ -175,8 +175,8 @@ export default function dilivium(pi: ExtensionAPI) {
 	let lastReport: string | null = null;
 	let reported = new Set<string>();
 	// The mode and prompt identity of the run currently in flight. `context_with_system` fires on
-	// every request, including runs where dilivium is off, so the strip has to know which run it is
-	// looking at. Without this it edited prompts dilivium had no business touching.
+	// every request, including runs where diluvium is off, so the strip has to know which run it is
+	// looking at. Without this it edited prompts diluvium had no business touching.
 	let runInForce = false;
 	let runPromptKey: string | null = null;
 
@@ -185,7 +185,7 @@ export default function dilivium(pi: ExtensionAPI) {
 		if (reported.has(key)) return;
 		try {
 			if (!ctx?.ui || ctx?.hasUI === false) return;
-			ctx.ui.notify(`pi-dilivium: ${message}`, type);
+			ctx.ui.notify(`pi-diluvium: ${message}`, type);
 			reported.add(key);
 		} catch {
 			/* a missing UI must not fail a run */
@@ -308,7 +308,7 @@ export default function dilivium(pi: ExtensionAPI) {
 		// and the seam. Keying on the model also breaks on the payload's own model string, which drops
 		// the provider prefix.
 		const key = promptText ? promptKey(promptText) : null;
-		// Delivery means *this* text reached the wire, not that some dilivium section did. The payload
+		// Delivery means *this* text reached the wire, not that some diluvium section did. The payload
 		// is checked for the prompt's own bytes, so a request that still carries the previous text
 		// cannot record an observation for the new one.
 		const delivered = runInForce && promptText !== null && promptText.length > 0 && text.includes(promptText);
@@ -340,7 +340,7 @@ export default function dilivium(pi: ExtensionAPI) {
 		return next ? { messages: next } : undefined;
 	});
 
-	pi.registerCommand("dilivium", {
+	pi.registerCommand("diluvium", {
 		description: "Directive layer: status, on, off, reload",
 		handler: async (args: string, ctx: any) => {
 			const cmd = String(args ?? "").trim().split(/\s+/)[0] || "status";
@@ -356,7 +356,7 @@ export default function dilivium(pi: ExtensionAPI) {
 			const mode = override === "on" ? MODE : override === "off" ? "normal" : resolveMode(config, ctx?.model).mode;
 			const prompt = readPrompt(config);
 			const lines = [
-				`dilivium 0.1.0  mode=${mode}${override ? ` (session override: ${override})` : ""}`,
+				`diluvium 0.1.0  mode=${mode}${override ? ` (session override: ${override})` : ""}`,
 				`config: ${config.configPath ?? "<none> — running normal"}`,
 				`rule match: ${resolveMode(config, ctx?.model).key}`,
 				`prompt: ${config.prompt} (${prompt.text ? `${prompt.text.length} chars` : prompt.error ?? "unreadable"})`,

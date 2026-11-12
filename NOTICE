@@ -1,9 +1,9 @@
-dilivium
-Copyright 2026 dilivium contributors
+diluvium
+Copyright 2026 diluvium contributors
 Licensed under the Apache License, Version 2.0. See LICENSE.
 
 This repository is an independent derivative of pi-leviathan. Lineage:
-dsh-purge -> pi-purge -> pi-leviathan -> dilivium.
+dsh-purge -> pi-purge -> pi-leviathan -> diluvium.
 
 One file carries an upstream notice of its own; everything else here was
 written in this repository and is Apache-2.0.
@@ -60,7 +60,7 @@ Licensed under the Apache License, Version 2.0. See LICENSE.
   there, and the README and check.mjs whose versions here are rewrites.
   Derivative works must retain this NOTICE and attribution.
 
-dilivium: compose.js, index.ts, check.mjs, eval/, docs/, README.md
-Copyright 2026 dilivium contributors
+diluvium: compose.js, index.ts, check.mjs, eval/, docs/, README.md
+Copyright 2026 diluvium contributors
 Licensed under the Apache License, Version 2.0, except prompt.md, which also
 carries the MIT notice above.

@@ -1,6 +1,6 @@
-# dilivium — Research Index
+# diluvium — Research Index
 
-> Compiled for the dilivium build (fork of `pi-leviathan`). Every row was verified live with
+> Compiled for the diluvium build (fork of `pi-leviathan`). Every row was verified live with
 > `gh api repos/<owner>/<repo> --jq .stargazers_count` at fetch time; no star count is invented.
 > Tiers: **T1** harness-level (operates on a coding agent's system prompt), **T2** prompt corpora,
 > **T3** defense/red-team (what the directive must survive), **T4** model-level (abliterated weights).

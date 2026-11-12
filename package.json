@@ -1,9 +1,9 @@
 {
-	"name": "dilivium",
+	"name": "diluvium",
 	"version": "0.1.0",
 	"private": true,
 	"type": "module",
-	"description": "dilivium: writes the directive as a system-prompt section instead of rewriting the leading message, so introspection matches the wire and the prefix stays cacheable, and withholds ask_authorize_gate until a payload actually carried the directive.",
+	"description": "diluvium: writes the directive as a system-prompt section instead of rewriting the leading message, so introspection matches the wire and the prefix stays cacheable, and withholds ask_authorize_gate until a payload actually carried the directive.",
 	"license": "Apache-2.0",
 	"pi": {
 		"extensions": [
