@@ -1,0 +1,7 @@
+{
+	"default": "normal",
+	"prompt": "prompt.md",
+	"rules": [
+		{ "provider": "cpa-openai", "model": "deepseek-*", "mode": "dilivium" }
+	]
+}

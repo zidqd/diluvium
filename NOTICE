@@ -1,0 +1,66 @@
+dilivium
+Copyright 2026 dilivium contributors
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This repository is an independent derivative of pi-leviathan. Lineage:
+dsh-purge -> pi-purge -> pi-leviathan -> dilivium.
+
+One file carries an upstream notice of its own; everything else here was
+written in this repository and is Apache-2.0.
+
+--------------------------------------------------------------------------
+prompt.md
+
+prompt.md carries an inherited claim: pi-leviathan's NOTICE stated that its
+version was a modified copy of dsh-purge's default prompt inject preset, with
+the ChatML envelope line "<|im_start|>system:<project_instructions>" and its
+trailing blank line removed. That claim has not been verifiable since the
+upstream repository was deleted, and prompt.md has been rewritten substantially
+in this project's own history (first commit 75f3abc, then 8c5f82e, e9decbc,
+5809e6e, 348c6f9, unchanged since). The MIT notice is retained for whatever
+portion of dsh-purge's text may remain. See LICENSE-MIT.
+
+dsh-purge - DeepSeek Harness 破甲
+Original author: YuJunZhiXue
+Copyright (c) 2026 小杨
+Source: https://github.com/mmparko/dsh-purge
+  a full mirror of the deleted upstream github.com/YuJunZhiXue/dsh-purge
+Licensed under the MIT License. See LICENSE-MIT.
+
+  dsh-purge's mirror notice asks that anyone borrowing its name, ideas, code
+  or prompts name the source repository and keep the original attribution, and
+  that the work not be resold - no selling of courses, plugins, tokens or
+  marked-up copies. Both requests are recorded here and honoured: this project
+  is not sold. Nothing in this NOTICE adds a condition to the MIT grant.
+
+--------------------------------------------------------------------------
+Attribution without copied code
+
+ZiChuanLan/pi-purge
+Copyright (c) 2026 ZiChuanLan
+Source: https://github.com/ZiChuanLan/pi-purge
+Licensed under the MIT License.
+
+  Credited for the R-class refusal taxonomy, the L1-L6 lever map, and the
+  Wilson-interval approach this repository's eval harness follows. No file
+  here is copied from it: that upstream's entire source is
+  extensions/pi-purge.ts plus test/, and it ships no eval/ tree. The harness
+  under eval/ was written in this repository at commit d63b928, which is why
+  it is not listed under LICENSE-MIT.
+
+--------------------------------------------------------------------------
+pi-leviathan
+Copyright 2026 pi-leviathan contributors
+Source: https://github.com/ImoutoHeaven/pi-leviathan
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+  This product includes software developed as part of pi-leviathan: the
+  extension mechanism this repository replaced, config.js's glob rule
+  matching, gate.js's ruling engine and field enum, prompt.md as distributed
+  there, and the README and check.mjs whose versions here are rewrites.
+  Derivative works must retain this NOTICE and attribution.
+
+dilivium: compose.js, index.ts, check.mjs, eval/, docs/, README.md
+Copyright 2026 dilivium contributors
+Licensed under the Apache License, Version 2.0, except prompt.md, which also
+carries the MIT notice above.

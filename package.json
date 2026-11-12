@@ -1,0 +1,30 @@
+{
+	"name": "dilivium",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"description": "dilivium: writes the directive as a system-prompt section instead of rewriting the leading message, so introspection matches the wire and the prefix stays cacheable, and withholds ask_authorize_gate until a payload actually carried the directive.",
+	"license": "Apache-2.0",
+	"pi": {
+		"extensions": [
+			"./index.ts"
+		]
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-coding-agent": "*"
+	},
+	"peerDependenciesMeta": {
+		"@earendil-works/pi-coding-agent": {
+			"optional": true
+		}
+	},
+	"engines": {
+		"node": ">=22.19"
+	},
+	"scripts": {
+		"test": "node check.mjs"
+	},
+	"dependencies": {
+		"yaml": "^2.9.1"
+	}
+}
